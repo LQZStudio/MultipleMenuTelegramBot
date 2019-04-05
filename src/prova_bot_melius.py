@@ -5,6 +5,8 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ReplyKeyboardMa
 from telegram.ext import Updater, MessageHandler, CommandHandler, CallbackQueryHandler, Filters, BaseFilter
 
 from config import *
+from bot_functions import *
+
 from json_functions import *
 dict_0 = readJsonFile(cfg.PATH_DICT)
 dict_1 =dict_0["italian"]
@@ -60,6 +62,7 @@ def message_callback_handler(bot, update):
     chat_id = update.message.chat_id
     global dict_1
     lang=searchLangOfChatId(chat_id)
+
     if(lang!=None):
         dict_1=dict_0[lang]
     else:
@@ -67,25 +70,52 @@ def message_callback_handler(bot, update):
         dict_1=dict_0["italian"]
         
     if(message_text == dict_1["main_menu"][0]):
-        bot.send_message(chat_id,text_sub_menu_1)
-        bot.send_document(chat_id,document=open(doc_sm1,'rb'))
-            
+        if(lang=="italian"):
+            bot.send_message(chat_id,text_sub_menu_1_ita)
+            bot.send_document(chat_id,document=open(doc_sm1_ita,'rb'))
+        if(lang=="english"):
+            bot.send_message(chat_id,text_sub_menu_1_eng)
+            bot.send_document(chat_id,document=open(doc_sm1_eng,'rb'))
+        bot.send_message(chat_id,dict_1["calculator_menu"][0],reply_markup=sub_menu_calculator_keyboard())
+    
     if(message_text == dict_1["main_menu"][1]):
-        bot.send_message(chat_id,text_sub_menu_2,reply_markup=sub_menu_keyboard("2"))
+        if(lang=="italian"):
+            bot.send_message(chat_id,text_sub_menu_2_ita,reply_markup=sub_menu_keyboard("2"))
+        if(lang=="english"):
+            bot.send_message(chat_id,text_sub_menu_2_eng,reply_markup=sub_menu_keyboard("2"))
+    
     if(message_text == dict_1["main_menu"][2]):
-        bot.send_message(chat_id,"https://www.youtube.com/watch?v=PtqwdZK_DAE")
-        bot.send_document(chat_id,document=open(doc_sm3_1,'rb'))
-        bot.send_document(chat_id,document=open(doc_sm3_2,'rb'))
+        if(lang=="italian"):
+            bot.send_message(chat_id,link_youtube_sm3_ita)
+            bot.send_document(chat_id,document=open(doc_sm3_1_ita,'rb'))
+            bot.send_document(chat_id,document=open(doc_sm3_2_ita,'rb'))
+        if(lang=="english"):
+            bot.send_message(chat_id,link_youtube_sm3_eng)
+            bot.send_document(chat_id,document=open(doc_sm3_1_eng,'rb'))
+            bot.send_document(chat_id,document=open(doc_sm3_2_eng,'rb'))
 
     if(message_text == dict_1["main_menu"][3]):
         bot.send_message(chat_id,message_text,reply_markup=sub_menu_concact_keyboard())
+    
     if(message_text == dict_1["main_menu"][4]):
-        bot.send_message(chat_id,text_sub_menu_5,reply_markup=sub_menu_keyboard("5"))
+        if(lang=="italian"):
+            bot.send_message(chat_id,text_sub_menu_5_ita,reply_markup=sub_menu_keyboard("5"))
+        if(lang=="english"):
+            bot.send_message(chat_id,text_sub_menu_5_eng,reply_markup=sub_menu_keyboard("5"))
+
     if(message_text == dict_1["go_back"]):
-        bot.deleteMessage(chat_id, update.message.message_id)
         main_menu(bot,update)
+    
+    if(message_text == dict_1["calculator_menu"][0]):
+        bot.send_message(chat_id,dict_1["calculator_menu"][1],reply_markup=ForceReply(force_reply=True))
 
-
+    if(message_text == dict_1["contact_menu"][0]):
+        bot.send_message(chat_id,link_gruppo_telegram)
+    if(message_text == dict_1["contact_menu"][1]):
+        bot.send_message(chat_id,link_gruppo_whatsapp)
+    if(message_text == dict_1["contact_menu"][2]):
+        bot.send_message(chat_id,telegram_contatto)
+        
 def set_language_keyboard():
     keyboard = [[InlineKeyboardButton('Italiano', callback_data='set_language_it'),
               InlineKeyboardButton('English', callback_data='set_language_eng')]]
@@ -111,8 +141,11 @@ def sub_menu_concact_keyboard():
               [dict_1["go_back"]]]
     return ReplyKeyboardMarkup(keyboard)
 
-bot = telegram.Bot(TOKEN)
+def sub_menu_calculator_keyboard():
+    keyboard = [[(dict_1["calculator_menu"][0])],[dict_1["go_back"]]]
+    return ReplyKeyboardMarkup(keyboard)
 
+bot = telegram.Bot(TOKEN)
 
 def main():
     #variabile TOKEN presente nel file config
