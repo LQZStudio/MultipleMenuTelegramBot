@@ -27,7 +27,7 @@ doc_sm3_2_eng = "../pdf/3/MELiUS_Roll-up.pdf"
 doc_sm3_1_ita = "../pdf/3/MELiUS OFFICIAL PRESENTATION.pdf"
 doc_sm3_2_ita = "../pdf/3/MELiUS_Roll-up.pdf"
 
-pip_number=1
+pip_number=50
 
 PATH_DICT="../json/language_dict.json"
 PATH_PREF="../json/user_preferences.json"

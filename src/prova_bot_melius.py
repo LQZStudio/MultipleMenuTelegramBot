@@ -108,7 +108,26 @@ def message_callback_handler(bot, update):
     
     if(message_text == dict_1["calculator_menu"][0]):
         bot.send_message(chat_id,dict_1["calculator_menu"][1],reply_markup=ForceReply(force_reply=True))
-
+    
+    if(update.message.reply_to_message.text == dict_1["calculator_menu"][1]):
+        split_str = message_text.split(" ")
+        if((split_str[0].isdigit()) & ((split_str[1] == dict_1["calculator_menu"][3]) | (split_str[1] == dict_1["calculator_menu"][4]) | (split_str[1] == dict_1["calculator_menu"][5]))):
+            if(float(split_str[0])<500):
+                bot.send_message(chat_id,dict_1["calculator_menu"][6])
+            else:
+                bot.send_message(chat_id,split_str[0]+" "+split_str[1])
+                if (split_str[1] == dict_1["calculator_menu"][3]):
+                    risk = 0
+                if (split_str[1] == dict_1["calculator_menu"][4]):
+                    risk = 1
+                if (split_str[1] == dict_1["calculator_menu"][5]):
+                    risk = 2
+                pip_value = calculator(float(split_str[0]),risk)
+                bot.send_message(chat_id,dict_1["calculator_menu"][7]+": "+str(pip_value,3)+" euro")
+        else:
+            bot.send_message(chat_id,dict_1["calculator_menu"][2])
+        bot.send_message(chat_id,dict_1["calculator_menu"][0],reply_markup=sub_menu_calculator_keyboard())
+ 
     if(message_text == dict_1["contact_menu"][0]):
         bot.send_message(chat_id,link_gruppo_telegram)
     if(message_text == dict_1["contact_menu"][1]):

@@ -11,6 +11,6 @@ def calculator(budget, risk):
     if risk==2:
         new_budget = (0.01/150)*budget
     
-    pip_value = new_budget*0.09*pip
+    pip_value = new_budget*0.09*pip_number
     return pip_value
 
