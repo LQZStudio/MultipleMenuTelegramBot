@@ -123,7 +123,7 @@ def message_callback_handler(bot, update):
                 if (split_str[1] == dict_1["calculator_menu"][5]):
                     risk = 2
                 pip_value = calculator(float(split_str[0]),risk)
-                bot.send_message(chat_id,dict_1["calculator_menu"][7]+": "+str(pip_value,3)+" euro")
+                bot.send_message(chat_id,dict_1["calculator_menu"][7]+": "+str(pip_value)+" euro")
         else:
             bot.send_message(chat_id,dict_1["calculator_menu"][2])
         bot.send_message(chat_id,dict_1["calculator_menu"][0],reply_markup=sub_menu_calculator_keyboard())
